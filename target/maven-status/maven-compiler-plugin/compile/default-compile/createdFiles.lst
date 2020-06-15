@@ -1,0 +1,15 @@
+com\example\model\Response.class
+com\example\repository\VendorListRepository.class
+com\example\model\Vendor.class
+com\example\DemoApplication.class
+com\example\controller\BatteryRestController.class
+com\example\model\VendorList.class
+com\example\service\BatteryService.class
+com\example\model\Battery.class
+com\example\service\VendorListServiceImpl.class
+com\example\service\VendorListService.class
+com\example\model\VendorListPK.class
+com\example\service\BatteryServiceImpl.class
+com\example\repository\BatteryRepository.class
+com\example\controller\BatteryController.class
+com\example\model\CustomBattery.class

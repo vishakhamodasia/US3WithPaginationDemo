@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8" />
+	<title>Spring Boot + JPA + Datatables</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+	<link type=text/css href="https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.11/css/dataTables.checkboxes.css" rel="stylesheet" >
+	<script type=text/javascript src=https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.11/js/dataTables.checkboxes.min.js></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+	var oTable = $('#createVLTable').DataTable({
+			"sAjaxSource": "/battery",
+			"sAjaxDataProp": "",
+			"aoColumnDefs": [
+		         {
+		            "aTargets": 0,
+		            "checkboxes": {
+		               "selectRow": true
+		            }
+		         }
+		      ],
+		      "select": {
+		         "style": "multi"
+		      },
+			"order": [[ 1, "asc" ]],
+			"aoColumns": [
+				  /*{ 
+					"orderable": false,
+					"mData": function (row, type, val, meta) {
+						return  '<input type="checkbox" name="batteries" class="batteries"/>';
+					}
+				  },*/
+				  { "mData": null},
+			      { "mData": "batteryId"},
+		          { "mData": "manufacturer" },
+				  { "mData": "make" },
+				  { "mData": "model" },
+				  { "mData": "capacity" },
+				  { "mData": "range_in_km" },
+				  { "mData": "range_in_mi"},
+		          { "mData": "wh_per_km" },
+				  { "mData": "wh_per_mi" },
+				  { "mData": "energycost_per_km" },
+				  { "mData": "energycost_per_mi" },
+				  { "mData": "charge_times" }
+			]
+	 });
+		
+		$('#create-list').click(function() {
+			var rowcollection = oTable.$("input:checked", {"page": "all"});
+            var customBatteryList = [];
+            var vendorId = $("#vendorid_get").val();
+            rowcollection.each(function(index,elem){
+                var row = $(elem).closest("tr")[0];
+                var msg="";
+                msg+=row.cells[1].innerHTML;
+                var customBattery={ 
+                			batteryId:msg
+                		};
+                customBatteryList.push(customBattery);
+               
+            });   
+            $.ajax({
+            	url:"/saveItems/"+vendorId,
+
+                type: 'POST',
+
+                data:  JSON.stringify(customBatteryList),             
+
+                dataType: "json",          
+
+                contentType: 'application/json',
+
+                mimeType: 'application/json',
+
+                success : function(result) {
+                    if(result.status == "Done"){
+                    	alert("Successfully created Vendor list!!!");
+                    	ViewVL();
+                    }else{
+                      	alert("Unable to create vendor list!!!");
+                    }
+                    console.log(result);
+                  },
+                  error : function(e) {
+                	alert("Vendor Not Found!!!"); 
+                    console.log("ERROR: ", e);
+                  }
+            });
+        });
+		
+	});
+	
+	 function ViewVL()
+	  {
+		 var vendorId = document.getElementById('vendorid_get').value,
+	     url = '/two.html?vendorId=' + encodeURIComponent(vendorId);
+		 document.location.href = url;
+	 }
+	
+    </script>
+</head>
+
+<body>
+	<h1>Create Vendor List</h1>
+	Vendor ID:<input type="text" id="vendorid_get" class="form-control" style="width:100px;"/>
+	<br>
+		<table id="createVLTable" class="display" cellspacing="0" width="100%">
+	      
+	       <!-- Header Table -->
+	       <thead>
+	            <tr>
+	            	<th></th>
+	                <th>BatteryId</th>
+					<th>Manufacturer</th>
+	                <th>Make</th>
+	                <th>Model</th>
+	                <th>Battery Capacity</th>
+	                <th>Range in KM</th>
+	                <th>Range in Miles</th>
+					<th>Watt Hours/KM</th>
+	                <th>Watt Hours/Miles</th>
+	                <th>Energy Cost/KM</th>
+	                <th>Energy Cost/Miles</th>
+	                <th>Charging times</th>
+	            </tr>
+	        </thead>
+	        <!-- Footer Table -->
+	        <tfoot>
+	            <tr>
+	            	<th></th>
+	                <th>BatteryId</th>
+					<th>Manufacturer</th>
+	                <th>Make</th>
+	                <th>Model</th>
+	                <th>Battery Capacity</th>
+	                <th>Range in KM</th>
+	                <th>Range in Miles</th>
+					<th>Watt Hours/KM</th>
+	                <th>Watt Hours/Miles</th>
+	                <th>Energy Cost/KM</th>
+	                <th>Energy Cost/Miles</th>
+	                <th>Charging times</th>
+	            </tr>
+	        </tfoot>
+	    </table>
+        <br>
+
+        <center><input type="button" id="create-list" value="Save Vendor List"/></center>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<html>
+    <head>
+        <title>battery specs</title>
+    </head>
+    <script>
+	    function pageRedirect() {
+	    	var queryString = window.location.search;
+
+			var urlParams = new URLSearchParams(queryString);
+
+			var vendorId = urlParams.get('vendorId');
+			
+			url= '/two.html?vendorId='+ encodeURIComponent(vendorId);	
+	      
+			window.location.href = url;
+	    }      
+	</script>
+    <body>
+    	<h2>Battery Details</h2>
+        <table class="table table-striped" id="myTable">
+            <tr>
+                <th>BatteryId</th>
+                <th><input type="text" th:field="${battery.batteryId}" /> </th>
+            </tr>
+            <tr>
+                <th>Manufacturer</th>
+                <th><input type="text" th:field="${battery.manufacturer}" /> </th>
+            </tr>
+            <tr>
+                <th>Make</th>
+                <th><input type="text" th:field="${battery.make}" /> </th>
+            </tr>
+            <tr>
+                <th>Model</th>
+                <th><input type="text" th:field="${battery.model}" /> </th>
+            </tr>
+            <tr>
+                <th>Battery Capacity</th>
+                <th><input type="text" th:field="${battery.capacity}" /> </th>
+            </tr>
+            <tr>
+                <th>Range in KM</th>
+                <th><input type="text" th:field="${battery.range_in_km}" /> </th>
+            </tr>
+            <tr>
+                <th>Range in Miles</th>
+                <th><input type="text" th:field="${battery.range_in_mi}" /> </th>
+            </tr>
+            <tr>
+                <th>Watt Hours/KM</th>
+                <th><input type="text" th:field="${battery.wh_per_km}" /> </th>
+            </tr>
+            <tr>
+                <th>Watt Hours/Miles</th>
+                <th><input type="text" th:field="${battery.wh_per_mi}" /> </th>
+            </tr>
+            <tr>
+                <th>Energy Cost/KM</th>
+                <th><input type="text" th:field="${battery.energycost_per_km}" /> </th>
+            </tr>
+            <tr>
+                <th>Energy Cost/Miles</th>
+                <th><input type="text" th:field="${battery.energycost_per_mi}" /> </th>
+            </tr>
+            <tr>
+                <th>Charging times</th>
+                <th><input type="text" th:field="${battery.charge_times}" /> </th>
+            </tr>
+          
+            <button type="button" onclick="pageRedirect()">Back</button>
+        </table>
+    </body>
+</html>
